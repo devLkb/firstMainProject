@@ -12,6 +12,8 @@
 | 프론트엔드 | React Native + Expo |
 | 백엔드 | Spring Boot, MySQL |
 
+> ※ 팀 레포에서 squash merge로 통합되어 git 기록상 개별 커밋 이력이 남아있지 않습니다. 아래 `pas/`, `favorite/`, `config/` 패키지가 본인 담당 코드입니다.
+
 ## 백엔드 아키텍처
 
 GPS 좌표를 받아 주정차 금지 여부를 판별하는 파이프라인 구조입니다.
@@ -40,7 +42,7 @@ ParkingStopCheckService
 
 ```
 backend/src/main/java/com/backend/backend/
-├── pas/                          ← 주정차 판별 (내 담당)
+├── pas/                          ← 주정차 판별
 │   ├── controller/
 │   │   └── ParkingStopCheckController.java
 │   ├── service/
@@ -49,7 +51,7 @@ backend/src/main/java/com/backend/backend/
 │       ├── ParkingStopCheckRequest.java
 │       ├── ParkingStopCheckByAddressRequest.java
 │       └── ParkingStopCheckResponse.java
-├── favorite/                     ← 즐겨찾기 (내 담당)
+├── favorite/                     ← 즐겨찾기
 │   ├── controller/
 │   │   └── FavoriteController.java
 │   ├── service/
@@ -62,7 +64,7 @@ backend/src/main/java/com/backend/backend/
 │       ├── FavoriteRequest.java
 │       └── FavoriteResponse.java
 └── config/
-    ├── KakaoApiProperties.java   ← 외부 API 설정
+    ├── KakaoApiProperties.java
     ├── ParkingStopApiProperties.java
     └── ParkingApiProperties.java
 ```
@@ -74,22 +76,16 @@ backend/src/main/java/com/backend/backend/
 | Method | Endpoint | 설명 |
 |--------|----------|------|
 | POST | `/api/pas/parking-stop-check` | GPS 좌표(x, y) → 주정차 금지 여부 판별 |
-| POST | `/api/pas/parking-stop-check-by-address` | 주소 직접 입력 → 주정차 금지 여부 판별 (테스트용) |
+| POST | `/api/pas/parking-stop-check-by-address` | 주소 직접 입력 → 판별 (테스트용) |
 
 **요청 예시**
 ```json
-{
-  "x": 127.0276,
-  "y": 37.4979
-}
+{ "x": 127.0276, "y": 37.4979 }
 ```
 
 **응답 예시**
 ```json
-{
-  "prohibited": true,
-  "roadAddress": "경기도 성남시 분당구 불정로 6"
-}
+{ "prohibited": true, "roadAddress": "경기도 성남시 분당구 불정로 6" }
 ```
 
 ### 즐겨찾기
@@ -105,7 +101,7 @@ backend/src/main/java/com/backend/backend/
 
 **공공데이터 API http/https 문제**
 
-공공데이터포털 API 엔드포인트가 공식 문서에 `https`로 안내되어 있었으나, 실제로는 `http`로 요청해야 정상 동작하는 문제가 발생했습니다. 콘솔 로그(`System.out.println`)를 통해 요청 URL과 응답 상태를 추적하여 원인 범위를 좁힌 뒤, `http`로 전환하여 해결했습니다.
+공공데이터포털 API 엔드포인트가 공식 문서에 `https`로 안내되어 있었으나, 실제로는 `http`로 요청해야 정상 동작하는 문제가 발생했습니다. 콘솔 로그를 통해 요청 URL과 응답 상태를 추적하여 원인 범위를 좁힌 뒤, `http`로 전환하여 해결했습니다.
 
 ## 기술 스택
 
@@ -123,7 +119,6 @@ backend/src/main/java/com/backend/backend/
 
 ```bash
 cd backend
-# application.properties에 API 키 설정 필요
 ./mvnw spring-boot:run
 ```
 
